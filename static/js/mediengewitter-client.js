@@ -24,8 +24,6 @@
     $('#container').empty();
 
     out.stopped = false;
-    out.cacheItems = [];
-    out.thumbnails = [];
 
     out.center = Math.floor((initData.length + 1) / 2);
     out.current = out.center;
@@ -48,29 +46,53 @@
         item.addClass('new');
       }
 
-      out.cacheItems.push(item);
-      out.thumbnails.push(thumbnail);
     });
 
     out.update = function (newData) {
       if (!out.stopped) {
-        out.cacheItems.push(genItem(newData).addClass('new'));
-        out.thumbnails.push(genThumbnail(newData));
+        genItem(newData).addClass('new');
+        genThumbnail(newData);
 
         if (out.current <= out.center) { // get back to center
-          this.next();
-        }
+          if ( out.current == 1) { // shift back to center, keep current
+            $('#container  :first').next().remove();
+            $('#thumbnails :first').next().remove();
+            var new_first       = $('#container  :first').next();
+            var new_first_thumb = $('#thumbnails :first').next();
+            
+            $('#container').prepend(new_first);
+            $('#thumbnails').prepend(new_first_thumb);
+          } else {
 
-        $('#container :first').remove();
-        $('#thumbnails :first').remove();
-        out.cacheItems.shift();
-        out.thumbnails.shift();
-        out.current -= 1;
+            $('#container  :first').remove();
+            $('#thumbnails :first').remove();
+            var current = $('#container :nth-child('+out.current+')')
+            var current_thumb = $('#thumbnails :nth-child('+out.current+')')
+            //var current = $('#container *').index(out.current);
+            //var current_thumb = $('#thumbnails *').index(out.current);
+            current.insertBefore(current.next())
+            current_thumb.insertBefore(current_thumb.next())
+
+          }
+          out.current += 1;
+
+
+          } else { //TODO FIXME FIX THIS!!!!
+            this.next();
+            $('#container :first').remove();
+            $('#thumbnails :first').remove();
+            out.current -= 1;
+          }
+        } else {
+          $('#container :first').remove();
+          $('#thumbnails :first').remove();
+          out.current -= 1;
       }
+
     };
 
     out.next = function () {
-      if (!(out.current === out.cacheItems.length)) {
+      if (!(out.current === $('#container * ').length )) {
         $('.current').removeClass('current').addClass('old').next().removeClass('new').addClass('current');
         $('.thumbnail_current').removeClass('thumbnail_current').next().addClass('thumbnail_current');
         out.current += 1;
