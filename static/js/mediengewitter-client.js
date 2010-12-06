@@ -47,49 +47,38 @@
       }
 
     });
-
+    
     out.update = function (newData) {
       if (!out.stopped) {
         genItem(newData).addClass('new');
         genThumbnail(newData);
 
-        if (out.current <= out.center) { // get back to center
-          if ( out.current == 1) { // shift back to center, keep current
+        if (out.current < out.center) { // shift back to center 
+          var curr = $('.current')
+          if ( out.current == 1) { // watch out for corner cases
             $('#container  :first').next().remove();
             $('#thumbnails :first').next().remove();
-            var new_first       = $('#container  :first').next();
-            var new_first_thumb = $('#thumbnails :first').next();
-            
-            $('#container').prepend(new_first);
-            $('#thumbnails').prepend(new_first_thumb);
           } else {
-
             $('#container  :first').remove();
             $('#thumbnails :first').remove();
-            var current = $('#container :nth-child('+out.current+')')
-            var current_thumb = $('#thumbnails :nth-child('+out.current+')')
-            //var current = $('#container *').index(out.current);
-            //var current_thumb = $('#thumbnails *').index(out.current);
-            current.insertBefore(current.next())
-            current_thumb.insertBefore(current_thumb.next())
-
+            swap(curr,curr.next());
+            curr.prev().removeClass('new').addClass('old');
+            swap($('.thumbnail_current'),$('.thumbnail_current').next());
           }
           out.current += 1;
-
-
-          } else { //TODO FIXME FIX THIS!!!!
-            this.next();
-            $('#container :first').remove();
-            $('#thumbnails :first').remove();
-            out.current -= 1;
-          }
+          swap(curr,curr.next());
+          curr.prev().removeClass('new').addClass('old');
+          swap($('.thumbnail_current'),$('.thumbnail_current').next());
         } else {
+          if ( out.current == out.center )
+            out.next() // switch only if in center
           $('#container :first').remove();
           $('#thumbnails :first').remove();
           out.current -= 1;
-      }
+        }
 
-    };
+      };
+    }
 
     out.next = function () {
       if (!(out.current === $('#container * ').length )) {
@@ -122,7 +111,9 @@
 
   var enabled = true,
   sections = [];
-
+  function swap(elem1, elem2) {
+    elem1.before(elem2);
+  }
   function isSupported() {
     return 'WebSocket' in window;
   }
