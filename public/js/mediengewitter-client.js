@@ -115,6 +115,7 @@
       }
       socket.send(JSON.stringify ( { type : 'chat', payload : { action: "msg", data : text}}));
       $('#chatInput').val('');
+      $('#chatInput').focus();
     }
     
     function connect() {
