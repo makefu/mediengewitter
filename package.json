@@ -3,6 +3,8 @@
     "connect": "*",
     "connect-cache": "*",
     "log4js": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "express": "*",
+    "sanitizer": "*"
   }
 }
