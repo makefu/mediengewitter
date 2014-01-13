@@ -118,8 +118,7 @@
     }
     
     function connect() {
-      socket = new io.Socket(window.location.hostname, { port: window.location.port });
-      socket.connect();
+      var socket = io.connect();
       $('#chatbutton').click ( sendText);
 
 

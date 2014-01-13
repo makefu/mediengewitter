@@ -1,5 +1,5 @@
 /*!
- * app.js is the server component of mahBucket
+ * app.js is the server component of Mediengewitter
  *
  * @author pfleidi
  * @author makefu
@@ -7,27 +7,27 @@
  */
 
 var Express = require('express');
-var Log4js = require('log4js')();
+var Log4js = require('log4js');
 var Fs = require('fs');
 var Ws = require('./lib/websocket.js');
 var PORT = 8080;
-var LOGFILE = __dirname + '/logs/mahBucket.log';
-var logger = Log4js.getLogger('mahBucket');
+var LOGFILE = __dirname + '/logs/Mediengewitter.log';
+var logger = Log4js.getLogger('Mediengewitter');
 
 /* 
  * set up the application
  */
-var app = module.exports = Express.createServer();
+var app = module.exports = Express();
 
 app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
-    app.use(Express.bodyDecoder());
-    app.use(Express.cookieDecoder());
+    app.use(Express.bodyParser());
+    app.use(Express.cookieParser());
     app.use(Express.methodOverride());
     app.use(Express.session());
     app.use(app.router);
-    app.use(Express.staticProvider(__dirname + '/public'));
+    app.use(Express.static(__dirname + '/public'));
   });
 
 app.configure('development', function () {
@@ -51,7 +51,7 @@ app.configure('production', function () {
   });
 
 app.listen(PORT, function () {
-    logger.info('mahBucket server listening on port: ' + app.address().port);
+    logger.info('Mediengewitter server listening on port: ' + this.address().port);
     Ws.createWebsocketServer(app, logger);
   });
 
