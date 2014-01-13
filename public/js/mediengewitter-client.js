@@ -9,7 +9,7 @@
  */
 
 (function (window, document, undefined) {
-    var cache = false,
+    var cache = false;
         socket = false;
 
     function log(msg) {
@@ -118,7 +118,7 @@
     }
     
     function connect() {
-      var socket = io.connect();
+      socket = io.connect();
       $('#chatbutton').click ( sendText);
 
 
