@@ -19,6 +19,8 @@ var logger = Log4js.getLogger('Mediengewitter');
  */
 var app = module.exports = Express();
 
+
+
 app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -50,10 +52,10 @@ app.configure('production', function () {
     logger.setLevel('ERROR');
   });
 
-app.listen(PORT, function () {
-    logger.info('Mediengewitter server listening on port: ' + this.address().port);
-    Ws.createWebsocketServer(app, logger);
-  });
+var server =require('http').createServer(app)
+Ws.createWebsocketServer(server, logger);
+logger.info('Mediengewitter server listening on port: ' + PORT);
+server.listen(PORT)
 
 /* Process Logging */
 
