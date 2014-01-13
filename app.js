@@ -25,7 +25,7 @@ app.configure(function () {
     app.use(Express.bodyParser());
     app.use(Express.cookieParser());
     app.use(Express.methodOverride());
-    app.use(Express.session());
+    app.use(Express.session({'secret': 'aidsballs'}));
     app.use(app.router);
     app.use(Express.static(__dirname + '/public'));
   });
