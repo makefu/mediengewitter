@@ -31,25 +31,11 @@ app.use(Express.session({'secret': 'aidsballs'}));
 app.use(app.router);
 app.use(Express.static(__dirname + '/public'));
 
-/*
-app.configure('development', function () {
-    app.use(Express.errorHandler({
-        dumpExceptions: true,
-        showStack: true 
-      }));
-    logger.setLevel('DEBUG');
-  });*/
-
-  var accessLog = Fs.createWriteStream(__dirname + '/logs/access.log', {
-      encoding: 'utf-8',
-      flags: 'a'
-    });
-
-  app.use(Express.logger({ stream: accessLog }));
-  app.use(Express.errorHandler());
-  Log4js.addAppender(Log4js.fileAppender(LOGFILE));
-  logger.setLevel('ERROR');
-
+app.use(Express.errorHandler({
+    dumpExceptions: true,
+    showStack: true 
+  }));
+logger.setLevel('DEBUG');
 var server =require('http').createServer(app)
 Ws.createWebsocketServer(server, logger);
 logger.info('Mediengewitter server listening on port: ' + PORT);
