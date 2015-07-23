@@ -21,36 +21,34 @@ var app = module.exports = Express();
 
 
 
-app.configure(function () {
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
-    app.use(Express.bodyParser());
-    app.use(Express.cookieParser());
-    app.use(Express.methodOverride());
-    app.use(Express.session({'secret': 'aidsballs'}));
-    app.use(app.router);
-    app.use(Express.static(__dirname + '/public'));
-  });
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(Express.bodyParser());
+app.use(Express.cookieParser());
+app.use(Express.methodOverride());
+app.use(Express.session({'secret': 'aidsballs'}));
+app.use(app.router);
+app.use(Express.static(__dirname + '/public'));
+
+/*
 app.configure('development', function () {
     app.use(Express.errorHandler({
         dumpExceptions: true,
         showStack: true 
       }));
     logger.setLevel('DEBUG');
-  });
+  });*/
 
-app.configure('production', function () {
-    var accessLog = Fs.createWriteStream(__dirname + '/logs/access.log', {
-        encoding: 'utf-8',
-        flags: 'a'
-      });
+  var accessLog = Fs.createWriteStream(__dirname + '/logs/access.log', {
+      encoding: 'utf-8',
+      flags: 'a'
+    });
 
-    app.use(Express.logger({ stream: accessLog }));
-    app.use(Express.errorHandler());
-    Log4js.addAppender(Log4js.fileAppender(LOGFILE));
-    logger.setLevel('ERROR');
-  });
+  app.use(Express.logger({ stream: accessLog }));
+  app.use(Express.errorHandler());
+  Log4js.addAppender(Log4js.fileAppender(LOGFILE));
+  logger.setLevel('ERROR');
 
 var server =require('http').createServer(app)
 Ws.createWebsocketServer(server, logger);
