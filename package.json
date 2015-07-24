@@ -2,9 +2,9 @@
   "dependencies": {
     "connect": "*",
     "connect-cache": "*",
-    "log4js": "*",
-    "socket.io": "*",
-    "express": "*",
+    "log4js": "=0.6.9",
+    "socket.io": "=0.9.16",
+    "express": "=3.4.7",
     "sanitizer": "*"
   }
 }
